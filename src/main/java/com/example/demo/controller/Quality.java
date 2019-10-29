@@ -17,8 +17,8 @@ import java.io.IOException;
 public class Quality {
 
 
-    @RequestMapping(value = "/quality/view",method = RequestMethod.POST)
-    public String view(@RequestBody JSONObject json) throws IOException {
+    @RequestMapping(value = "/quality/qualified",method = RequestMethod.POST)
+    public String qualified(@RequestBody JSONObject json) throws IOException {
 
         return "";
     }
