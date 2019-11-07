@@ -4,18 +4,7 @@
 
     <resultMap id="TailorInfoResult" type="com.example.demo.pojo.TailorInfo">
         <id property="id" column="ID"/>
-
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
+        <result property="factoryID" column="FACTORY_ID"/>
 
         <result property="version" column="_VERSION"/>
         <result property="cuid" column="_CREATE_USER_ID"/>

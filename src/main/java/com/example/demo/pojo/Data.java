@@ -300,4 +300,40 @@ public class Data {
     public void setOutName(String outName) {
         this.outName = outName;
     }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "version='" + version + '\'' +
+                ", cuid='" + cuid + '\'' +
+                ", cname='" + cname + '\'' +
+                ", ctime='" + ctime + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", uname='" + uname + '\'' +
+                ", utime='" + utime + '\'' +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", factoryID='" + factoryID + '\'' +
+                ", goodsTypeID='" + goodsTypeID + '\'' +
+                ", goodsStyleID='" + goodsStyleID + '\'' +
+                ", goodsColorID='" + goodsColorID + '\'' +
+                ", RFID='" + RFID + '\'' +
+                ", typeID='" + typeID + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", styleID='" + styleID + '\'' +
+                ", styleName='" + styleName + '\'' +
+                ", colorID='" + colorID + '\'' +
+                ", colorName='" + colorName + '\'' +
+                ", sizeID='" + sizeID + '\'' +
+                ", sizeName='" + sizeName + '\'' +
+                ", status='" + status + '\'' +
+                ", goodsID='" + goodsID + '\'' +
+                ", qaID='" + qaID + '\'' +
+                ", tailorID='" + tailorID + '\'' +
+                ", managerID='" + managerID + '\'' +
+                ", outID='" + outID + '\'' +
+                ", outName='" + outName + '\'' +
+                '}';
+    }
 }

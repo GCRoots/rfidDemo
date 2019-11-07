@@ -4,18 +4,17 @@
 
     <resultMap id="GoodsInfoResult" type="com.example.demo.pojo.GoodsInfo">
         <id property="id" column="ID"/>
-
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
+        <result property="factoryID" column="FACTORY_ID"/>
+        <result property="RFID" column="RFID"/>
+        <result property="typeID" column="TYPE_ID"/>
+        <result property="typeName" column="TYPE_NAME"/>
+        <result property="styleID" column="STYLE_ID"/>
+        <result property="styleName" column="STYLE_NAME"/>
+        <result property="colorID" column="COLOR_ID"/>
+        <result property="colorName" column="COLOR_NAME"/>
+        <result property="sizeID" column="SIZE_ID"/>
+        <result property="sizeName" column="SIZE_NAME"/>
+        <result property="status" column="STATUS"/>
 
         <result property="version" column="_VERSION"/>
         <result property="cuid" column="_CREATE_USER_ID"/>

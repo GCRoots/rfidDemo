@@ -18,6 +18,7 @@ public class GoodsSize {
     private String name;         // NAME 名称(款式、类型、色号、尺码)
     private String code;         // CODE 代码(类型、色号、尺码)
     private String factoryID;    // FACTORY_ID 工厂ID
+    private String goodsColorID; // GOODS_COLOR_ID 所属色号ID
 
     public String getVersion() {
         return version;
@@ -115,7 +116,6 @@ public class GoodsSize {
         this.goodsColorID = goodsColorID;
     }
 
-    private String goodsColorID; // GOODS_COLOR_ID 所属色号ID
 
     @Override
     public String toString() {

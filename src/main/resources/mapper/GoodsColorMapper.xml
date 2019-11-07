@@ -4,7 +4,6 @@
 
     <resultMap id="GoodsColorResult" type="com.example.demo.pojo.GoodsColor">
         <id property="id" column="ID"/>
-
         <result property="name" column="FACTORY_ID"/>
         <result property="code" column="GOOD_STYLE_ID"/>
         <result property="factoryID" column="NAME"/>

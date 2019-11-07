@@ -4,18 +4,12 @@
 
     <resultMap id="GoodsInventoryLogResult" type="com.example.demo.pojo.GoodsInventoryLog">
         <id property="id" column="ID"/>
-
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
-        <result property="" column=""/>
+        <result property="factoryID" column="FACTORY_ID"/>
+        <result property="goodsID" column="GOODS_ID"/>
+        <result property="managerID" column="MANAGER_ID"/>
+        <result property="status" column="STATUS"/>
+        <result property="outID" column="OUTBOUND_TYPE_ID"/>
+        <result property="outName" column="OUTBOUND_TYPE_NAME"/>
 
         <result property="version" column="_VERSION"/>
         <result property="cuid" column="_CREATE_USER_ID"/>
