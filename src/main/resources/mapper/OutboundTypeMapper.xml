@@ -16,7 +16,9 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
-
+    <select id="FindByOutboundTypeID"  resultMap="OutboundTypeResult">
+    select * from TB_OUTBOUND_TYPE where ID = #{id}
+    </select>
 
 
 </mapper>

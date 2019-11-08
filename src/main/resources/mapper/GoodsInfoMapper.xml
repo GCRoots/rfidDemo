@@ -25,6 +25,8 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
-
+    <select id="FindByInfoID"  resultMap="GoodsInfoResult">
+    select * from TB_GOODS_INFO where ID = #{id}
+    </select>
 
 </mapper>

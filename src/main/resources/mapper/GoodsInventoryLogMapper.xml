@@ -20,6 +20,9 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
+    <select id="FindByInventoryLogID"  resultMap="GoodsInventoryLogResult">
+    select * from TB_GOODS_INVENTORY_LOG where ID = #{id}
+    </select>
 
 
 </mapper>

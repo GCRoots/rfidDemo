@@ -1,6 +1,9 @@
 package com.example.demo.server.imp;
 
+import com.example.demo.dao.mapper.GoodsStytleMapper;
+import com.example.demo.pojo.GoodsStytle;
 import com.example.demo.server.GoodsStytleServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,4 +12,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GoodsStytleServerImp implements GoodsStytleServer {
+    @Autowired
+    private GoodsStytleMapper goodsStytleMapper;
+
+    @Override
+    public GoodsStytle FindByStytleID(String id) {
+        return goodsStytleMapper.FindByStytleID(id);
+    }
 }

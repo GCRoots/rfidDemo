@@ -1,6 +1,9 @@
 package com.example.demo.server.imp;
 
+import com.example.demo.dao.mapper.GoodsInfoMapper;
+import com.example.demo.pojo.GoodsInfo;
 import com.example.demo.server.GoodsInfoServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,4 +12,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GoodsInfoServerImp implements GoodsInfoServer {
+    @Autowired
+    private GoodsInfoMapper goodsInfoMapper;
+
+    @Override
+    public GoodsInfo FindByInfoID(String id) {
+        return goodsInfoMapper.FindByInfoID(id);
+    }
 }

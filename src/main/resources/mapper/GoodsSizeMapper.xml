@@ -18,6 +18,8 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
-
+    <select id="FindBySizeID"  resultMap="GoodsSizeResult">
+    select * from TB_GOODS_SIZE where ID = #{id}
+    </select>
 
 </mapper>

@@ -1,6 +1,9 @@
 package com.example.demo.server.imp;
 
+import com.example.demo.dao.mapper.GoodsQaLogMapper;
+import com.example.demo.pojo.GoodsQaLog;
 import com.example.demo.server.GoodsQaLogServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,4 +12,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GoodsQaLogServerImp implements GoodsQaLogServer {
+    @Autowired
+    private GoodsQaLogMapper goodsQaLogMapper;
+
+    @Override
+    public GoodsQaLog FindByQaLogID(String id) {
+        return goodsQaLogMapper.FindByQaLogID(id);
+    }
 }

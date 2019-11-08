@@ -18,7 +18,9 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
-
+    <select id="FindByStytleID"  resultMap="GoodsStytleResult">
+    select * from TB_GOODS_STYLE where ID = #{id}
+    </select>
 
 
 </mapper>

@@ -19,6 +19,8 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
-
+    <select id="FindByQaLogID"  resultMap="GoodsQaLogResult">
+    select * from TB_GOODS_QA_LOG where ID = #{id}
+    </select>
 
 </mapper>

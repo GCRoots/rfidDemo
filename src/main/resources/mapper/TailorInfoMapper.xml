@@ -15,6 +15,8 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
-
+    <select id="FindByTailorID"  resultMap="TailorInfoResult">
+    select * from TB_TAILOR_INFO where ID = #{id}
+    </select>
 
 </mapper>
