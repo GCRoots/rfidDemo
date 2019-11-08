@@ -18,6 +18,11 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
+    <select id="FindByColorID"  resultMap="GoodsColorResult">
+    select * from TB_GOODS_COLOR where ID = #{id}
+    </select>
+
+
 
 
 </mapper>

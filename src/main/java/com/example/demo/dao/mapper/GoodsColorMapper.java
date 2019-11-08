@@ -1,5 +1,7 @@
 package com.example.demo.dao.mapper;
 
+import com.example.demo.pojo.GoodsColor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,4 +10,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface GoodsColorMapper {
+
+    GoodsColor FindByColorID(@Param("id") String id);
+
+
 }
