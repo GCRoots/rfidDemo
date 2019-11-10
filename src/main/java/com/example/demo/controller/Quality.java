@@ -25,6 +25,8 @@ public class Quality {
     @Autowired
     private GoodsColorServer goodsColorServer;
 
+
+    //质检-合格品
     @RequestMapping(value = "/quality/qualified",method = RequestMethod.POST)
     public String qualified(@RequestBody JSONObject json) throws IOException {
 
@@ -38,5 +40,25 @@ public class Quality {
         return s;
     }
 
+    //质检-残次品
+    @RequestMapping(value = "/quality/failed",method = RequestMethod.POST)
+    public String failed(@RequestBody JSONObject json) throws IOException {
+
+        Data d= JSON.parseObject(json.toString(), Data.class);
+        String id=d.getId();
+
+        return "";
+    }
+
+
+    //质检-销毁
+    @RequestMapping(value = "/quality/destroy",method = RequestMethod.POST)
+    public String destroy(@RequestBody JSONObject json) throws IOException {
+
+        Data d= JSON.parseObject(json.toString(), Data.class);
+        String id=d.getId();
+
+        return "";
+    }
 
 }
