@@ -44,6 +44,7 @@ public class GrpcClient {
      * 实际调用部分
      * @param nums 传到服务端的数据流
      */
+    //read操作
     public void read( List<Integer> nums) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
@@ -52,33 +53,39 @@ public class GrpcClient {
         ClientResponseObserver<ReadParam, ReadReply> responseObserver =
                 new ClientResponseObserver<ReadParam, ReadReply>() {
 
-                    ClientCallStreamObserver<ReadParam> requestStream;
+                    ClientCallStreamObserver<ReadParam> readCallStreamObserver;
 
+                    //client客户端连接server服务器前进行的操作
+                    //eg: 将参数传递给服务器
                     @Override
-                    public void beforeStart(ClientCallStreamObserver<ReadParam> clientCallStreamObserver) {
-                        this.requestStream = requestStream;
-                        requestStream.disableAutoInboundFlowControl();
+                    public void beforeStart(ClientCallStreamObserver<ReadParam> readCallStreamObserver) {
+                        this.readCallStreamObserver = readCallStreamObserver;
+                        readCallStreamObserver.disableAutoInboundFlowControl();
 
-                        requestStream.setOnReadyHandler(new Runnable() {
+                        readCallStreamObserver.setOnReadyHandler(new Runnable() {
 
                             @Override
                             public void run() {
                                 // Start generating values from where we left off on a non-gRPC thread.
-                                while (requestStream.isReady()) {
+                                while (readCallStreamObserver.isReady()) {
 
                                 }
                             }
                         });
                     }
 
+                    //拿到一个数据后，进行相应的操作
                     @Override
                     public void onNext(ReadReply value) {
                         logger.info("<-- " + value.toString());
 
                         value.getBaseInfo().getResultCode().getNumber();
 
+                        ReadParam readParam=ReadParam.newBuilder().build();
+                        ReadReply readReply;
+
                         // Signal the sender to send one message.
-                        requestStream.request(1);
+                        readCallStreamObserver.request(1);
                     }
 
                     @Override
@@ -102,6 +109,7 @@ public class GrpcClient {
 
     }
 
+    //write操作
     public void write( List<Integer> nums) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
@@ -110,19 +118,19 @@ public class GrpcClient {
         ClientResponseObserver<WriteParam, WriteReply> responseObserver =
                 new ClientResponseObserver<WriteParam, WriteReply>() {
 
-                    ClientCallStreamObserver<ReadParam> requestStream;
+                    ClientCallStreamObserver<WriteParam> writeCallStreamObserver;
 
                     @Override
-                    public void beforeStart(ClientCallStreamObserver<WriteParam> clientCallStreamObserver) {
-                        this.requestStream = requestStream;
-                        requestStream.disableAutoInboundFlowControl();
+                    public void beforeStart(ClientCallStreamObserver<WriteParam> writeCallStreamObserver) {
+                        this.writeCallStreamObserver = writeCallStreamObserver;
+                        writeCallStreamObserver.disableAutoInboundFlowControl();
 
-                        requestStream.setOnReadyHandler(new Runnable() {
+                        writeCallStreamObserver.setOnReadyHandler(new Runnable() {
 
                             @Override
                             public void run() {
                                 // Start generating values from where we left off on a non-gRPC thread.
-                                while (requestStream.isReady()) {
+                                while (writeCallStreamObserver.isReady()) {
 
                                 }
                             }
@@ -136,7 +144,7 @@ public class GrpcClient {
                         value.getBaseInfo().getResultCode().getNumber();
 
                         // Signal the sender to send one message.
-                        requestStream.request(1);
+                        writeCallStreamObserver.request(1);
                     }
 
                     @Override
@@ -160,6 +168,7 @@ public class GrpcClient {
 
     }
 
+    //init操作
     public void init( List<Integer> nums) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
@@ -168,19 +177,19 @@ public class GrpcClient {
         ClientResponseObserver<InitParam, InitReply> responseObserver =
                 new ClientResponseObserver<InitParam, InitReply>() {
 
-                    ClientCallStreamObserver<ReadParam> requestStream;
+                    ClientCallStreamObserver<InitParam> initCallStreamObserver;
 
                     @Override
-                    public void beforeStart(ClientCallStreamObserver<InitParam> clientCallStreamObserver) {
-                        this.requestStream = requestStream;
-                        requestStream.disableAutoInboundFlowControl();
+                    public void beforeStart(ClientCallStreamObserver<InitParam> initCallStreamObserver) {
+                        this.initCallStreamObserver = initCallStreamObserver;
+                        initCallStreamObserver.disableAutoInboundFlowControl();
 
-                        requestStream.setOnReadyHandler(new Runnable() {
+                        initCallStreamObserver.setOnReadyHandler(new Runnable() {
 
                             @Override
                             public void run() {
                                 // Start generating values from where we left off on a non-gRPC thread.
-                                while (requestStream.isReady()) {
+                                while (initCallStreamObserver.isReady()) {
 
                                 }
                             }
@@ -194,7 +203,7 @@ public class GrpcClient {
                         value.getBaseInfo().getResultCode().getNumber();
 
                         // Signal the sender to send one message.
-                        requestStream.request(1);
+                        initCallStreamObserver.request(1);
                     }
 
                     @Override
