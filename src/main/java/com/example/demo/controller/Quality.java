@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.mapper.GoodsColorMapper;
+import com.example.demo.grpc.GrpcClient;
 import com.example.demo.pojo.Data;
 import com.example.demo.pojo.GoodsColor;
 import com.example.demo.server.GoodsColorServer;
@@ -25,6 +26,11 @@ public class Quality {
     @Autowired
     private GoodsColorServer goodsColorServer;
 
+
+    private static final String DEFAULT_HOST = "localhost";
+    private static final int DEFAULT_PORT = 8088;
+
+    private static final GrpcClient client=new GrpcClient(DEFAULT_HOST,DEFAULT_PORT);
 
     //质检-合格品
     @RequestMapping(value = "/quality/qualified",method = RequestMethod.POST)
