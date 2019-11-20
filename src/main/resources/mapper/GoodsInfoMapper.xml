@@ -29,4 +29,9 @@
     select * from TB_GOODS_INFO where ID = #{id}
     </select>
 
+    <select id="FindGoodsInfo"  resultMap="GoodsInfoResult">
+    select * from TB_GOODS_INFO where (TYPE_NAME,STYLE_NAME,STYLE_NAME,COLOR_NAME)
+    values (#{typeName},#{styleName},#{sizeName},#{colorName})
+    </select>
+
 </mapper>

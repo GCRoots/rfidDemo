@@ -15,7 +15,7 @@ public class Data {
     private String uname;   // _UPDATE_USER_NAME 更新用户名
     private String utime;   // _UPDATE_TIME 更新时间
 
-    /* TB_OUTBOUND_TYPE 商品类型表
+    /* TB_GOODS_TYPE 商品类型表
      * TB_GOODS_STYLE   商品款号表
      * TB_GOODS_COLOR   商品色号表
      * TB_GOODS_SIZE    商品尺码表
@@ -60,6 +60,11 @@ public class Data {
     private String managerID; // MANAGER_ID 仓库管理人ID
     private String outID;     // OUTBOUND_TYPE_ID 出库类型ID
     private String outName;   // OUTBOUND_TYPE_NAME 出库名称
+
+    private String tag;  // 数据域，即在操作时，将此次操作的服装标记为一批，
+                         // 对其进行统一操作，用以标示身份
+
+    private String state;
 
     public String getVersion() {
         return version;
@@ -301,6 +306,22 @@ public class Data {
         this.outName = outName;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "Data{" +
@@ -334,6 +355,8 @@ public class Data {
                 ", managerID='" + managerID + '\'' +
                 ", outID='" + outID + '\'' +
                 ", outName='" + outName + '\'' +
+                ", tag='" + tag + '\'' +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

@@ -33,22 +33,32 @@ public class Quality {
     private static final GrpcClient client=new GrpcClient(DEFAULT_HOST,DEFAULT_PORT);
 
     //质检-合格品
-    @RequestMapping(value = "/quality/qualified",method = RequestMethod.POST)
+    @RequestMapping(value = "qualified/submit",method = RequestMethod.POST)
     public String qualified(@RequestBody JSONObject json) throws IOException {
 
         Data d= JSON.parseObject(json.toString(), Data.class);
-        String id=d.getId();
+        String type=d.getTypeName();
+        String size=d.getSizeName();
+        String style=d.getStyleName();
+        String color=d.getColorName();
+        String status=d.getStatus();
 
-        GoodsColor color=goodsColorServer.FindByColorID(id);
-        System.out.println(color.toString());
 
-        String s=JSON.toJSONString(color);
-        return s;
+
+
+
+
+
+        String state="t";
+
+
+
+        return "";
     }
 
     //质检-残次品
-    @RequestMapping(value = "/quality/failed",method = RequestMethod.POST)
-    public String failed(@RequestBody JSONObject json) throws IOException {
+    @RequestMapping(value = "unqualified/submit",method = RequestMethod.POST)
+    public String unqualified(@RequestBody JSONObject json) throws IOException {
 
         Data d= JSON.parseObject(json.toString(), Data.class);
         String id=d.getId();
@@ -63,6 +73,9 @@ public class Quality {
 
         Data d= JSON.parseObject(json.toString(), Data.class);
         String id=d.getId();
+
+
+
 
         return "";
     }
