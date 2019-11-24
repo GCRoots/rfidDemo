@@ -5,10 +5,10 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.ClientCallStreamObserver;
 import io.grpc.stub.ClientResponseObserver;
-import io.grpc.stub.StreamObserver;
 
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -21,6 +21,7 @@ public class GrpcClient {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 8088;
+    private static final String UUID= null;
 
     private static final Logger logger = Logger.getLogger(GrpcClient.class.getName());
 
@@ -104,7 +105,7 @@ public class GrpcClient {
     }
 
     //read操作
-    public void read( List<Integer> nums) throws InterruptedException {
+    public Map<String,List<String>> read(String rfid, List<String> rfids) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -140,8 +141,13 @@ public class GrpcClient {
 
                         value.getBaseInfo().getResultCode().getNumber();
 
-                        ReadParam readParam=ReadParam.newBuilder().build();
-                        ReadReply readReply;
+                        int count= (int) value.getCount();
+                        while (count>0){
+                            String rfid=String.valueOf(value.getList(count).getId());
+                            rfids.add(rfid);
+                            System.out.println(rfid);
+                            count--;
+                        }
 
                         // Signal the sender to send one message.
                         readCallStreamObserver.request(1);
@@ -165,6 +171,12 @@ public class GrpcClient {
 
         managedChannel.shutdown();
         managedChannel.awaitTermination(1, TimeUnit.SECONDS);
+
+
+        Map<String,List<String>> map=new HashMap<>();
+        map.put(rfid,rfids);
+
+        return map;
 
     }
 

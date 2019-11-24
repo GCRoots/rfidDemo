@@ -21,6 +21,9 @@ function connect() {
         stompClient.subscribe('/topic/greetings', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
+        stompClient.subscribe('/topic/readings', function (greeting) {
+            showReading(JSON.parse(greeting.body).content);
+        });
     });
 }
 
@@ -40,6 +43,14 @@ function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
 }
 
+function sendread() {
+    stompClient.send("/app/read");
+}
+
+function showReading(message) {
+    $("#readings").append("<tr><td>" + message + "</td></tr>");
+}
+
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
@@ -47,5 +58,6 @@ $(function () {
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendName(); });
+    $( "#read" ).click(function() { sendread(); });
 });
 
