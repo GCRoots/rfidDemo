@@ -22,7 +22,7 @@ function connect() {
             showGreeting(JSON.parse(greeting.body).content);
         });
         stompClient.subscribe('/topic/readings', function (greeting) {
-            showReading(JSON.parse(greeting.body).content);
+            showReading(JSON.parse(greeting.body).name);
         });
     });
 }
