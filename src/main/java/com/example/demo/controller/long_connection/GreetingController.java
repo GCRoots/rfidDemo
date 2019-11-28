@@ -8,13 +8,11 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.websocket.Session;
 import java.util.UUID;
 
 @Controller
 public class GreetingController {
 
-    private String uuid;
 
     @Autowired
     private WebSocketService webSocketService;
@@ -30,14 +28,12 @@ public class GreetingController {
     @Autowired
     private SimpMessagingTemplate template;
 
-    private Session session;
-
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
-        uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
         for (int i=0;i<10;i++){
 
@@ -57,12 +53,22 @@ public class GreetingController {
 
     @MessageMapping("/read")
     @SendTo("/topic/readings")
-    public Greeting reading() throws Exception {
+    public void reading(int num,String uuid,SimpMessagingTemplate template) throws Exception {
         Thread.sleep(1000); // simulated delay
+        int readNum=0;
+        
+        template.convertAndSend("/topic/greetings",new HelloMessage(uuid));
+        
+        while (true){
+            if (readNum>=num)
+                break;
+            
+            
+            
+        }
 
-//        client.read();
-
-        return new Greeting(uuid);
+        
+        
     }
 
 

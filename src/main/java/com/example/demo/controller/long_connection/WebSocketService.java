@@ -12,10 +12,22 @@ import java.time.format.DateTimeFormatter;
  * @data 19-11-27
  */
 @Component
-public class WebSocketService {
+public class WebSocketService extends Thread{
 
     @Autowired
     private SimpMessagingTemplate template;
+
+    private String uuid="";
+    private int num=0;
+
+    public WebSocketService(){
+    }
+
+    public WebSocketService(SimpMessagingTemplate template,int num,String uuid){
+        this.template=template;
+        this.num=num;
+        this.uuid=uuid;
+    }
 
     public void sendInfo(){
 
@@ -25,4 +37,30 @@ public class WebSocketService {
         template.convertAndSend("/topic/greetings",new HelloMessage(now.format(df)));
 
     }
+
+    public void reading(int num,String uuid,SimpMessagingTemplate template) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        int readNum=0;
+
+        template.convertAndSend("/topic/greetings",new HelloMessage(uuid));
+
+        while (true){
+            if (readNum>=num)
+                break;
+
+
+
+        }
+
+    }
+
+    public void run(){
+        try {
+            reading(num,uuid,template);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

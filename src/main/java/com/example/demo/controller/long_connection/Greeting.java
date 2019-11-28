@@ -2,17 +2,17 @@ package com.example.demo.controller.long_connection;
 
 public class Greeting {
 
-    private String content;
+    private String name;
 
     public Greeting() {
     }
 
-    public Greeting(String content) {
-        this.content = content;
+    public Greeting(String name) {
+        this.name = name;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
 }
