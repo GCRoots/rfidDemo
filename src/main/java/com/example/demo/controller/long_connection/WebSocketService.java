@@ -42,14 +42,12 @@ public class WebSocketService extends Thread{
         Thread.sleep(1000); // simulated delay
         int readNum=0;
 
-        template.convertAndSend("/topic/greetings",new HelloMessage(uuid));
-
         while (true){
             if (readNum>=num)
                 break;
 
-
-
+            template.convertAndSend("/topic/greetings",new HelloMessage(uuid+"-"+readNum));
+            readNum++;
         }
 
     }

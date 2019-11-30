@@ -35,11 +35,8 @@ public class GreetingController {
         Thread.sleep(1000); // simulated delay
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
-        for (int i=0;i<10;i++){
+        new WebSocketService(template,50,uuid).start();
 
-            template.convertAndSend("/topic/greetings",new HelloMessage(uuid));
-
-        }
         return new Greeting(uuid+"\t\t" + HtmlUtils.htmlEscape(message.getName()));
     }
 
@@ -58,7 +55,6 @@ public class GreetingController {
         int readNum=0;
         
         template.convertAndSend("/topic/greetings",new HelloMessage(uuid));
-        
         while (true){
             if (readNum>=num)
                 break;

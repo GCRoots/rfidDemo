@@ -5,7 +5,9 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.ClientCallStreamObserver;
 import io.grpc.stub.ClientResponseObserver;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,12 +106,18 @@ public class GrpcClient {
 
     }
 
-    //read操作
-    public Map<String,List<String>> read(String rfid, List<String> rfids) throws InterruptedException {
+    /**
+     * read操作
+     * @param num 应读到商品数量
+     * @param uuid 商品集合的唯一标识符
+     * @param template 与页面进行交互
+     * */
+    public Map<String,List<String>> read(int num, String uuid, SimpMessagingTemplate template) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
+        List<String> rfids=new ArrayList<>();
         ClientResponseObserver<ReadParam, ReadReply> responseObserver =
                 new ClientResponseObserver<ReadParam, ReadReply>() {
 
@@ -142,6 +150,7 @@ public class GrpcClient {
                         value.getBaseInfo().getResultCode().getNumber();
 
                         int count= (int) value.getCount();
+                        count--;
                         while (count>0){
                             String rfid=String.valueOf(value.getList(count).getId());
                             rfids.add(rfid);
@@ -164,6 +173,7 @@ public class GrpcClient {
                         logger.info("All Done");
                         countDownLatch.countDown();
                     }
+                    
                 };
 
         rfidStub.read(responseObserver);
@@ -174,7 +184,7 @@ public class GrpcClient {
 
 
         Map<String,List<String>> map=new HashMap<>();
-        map.put(rfid,rfids);
+        map.put(uuid,rfids);
 
         return map;
 
