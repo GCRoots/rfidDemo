@@ -30,8 +30,12 @@
     </select>
 
     <select id="FindGoodsInfo"  resultMap="GoodsInfoResult">
-    select * from TB_GOODS_INFO where (TYPE_NAME,STYLE_NAME,STYLE_NAME,COLOR_NAME)
+    select * from TB_GOODS_INFO where (TYPE_NAME,STYLE_NAME,SIZE_ID,COLOR_NAME)
     values (#{typeName},#{styleName},#{sizeName},#{colorName})
+    </select>
+
+    <select id="FindByInfoRFID"  resultMap="GoodsInfoResult">
+    select TYPE_NAME,STYLE_NAME,SIZE_NAME,COLOR_NAME from TB_GOODS_INFO where RFID = #{RFID}
     </select>
 
 </mapper>

@@ -5,12 +5,12 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.ClientCallStreamObserver;
 import io.grpc.stub.ClientResponseObserver;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -23,13 +23,18 @@ public class GrpcClient {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 8088;
-    private static final String UUID= null;
 
     private static final Logger logger = Logger.getLogger(GrpcClient.class.getName());
 
     private final ManagedChannel managedChannel;
     private final RFIDGrpc.RFIDStub rfidStub;
 
+    public GrpcClient() {
+        //使用明文通讯，这里简单化，实际生产环境需要通讯加密
+        this(ManagedChannelBuilder.forAddress(DEFAULT_HOST,DEFAULT_PORT)
+                .usePlaintext()
+                .build());
+    }
 
     public GrpcClient(String host, int port) {
         //使用明文通讯，这里简单化，实际生产环境需要通讯加密
@@ -110,9 +115,9 @@ public class GrpcClient {
      * read操作
      * @param num 应读到商品数量
      * @param uuid 商品集合的唯一标识符
-     * @param template 与页面进行交互
+     * @param arrayBlockingQueue 用于传递接受到的消息到后台处理
      * */
-    public Map<String,List<String>> read(int num, String uuid, SimpMessagingTemplate template) throws InterruptedException {
+    public Map<String,List<String>> read(int num, String uuid, ArrayBlockingQueue<String> arrayBlockingQueue) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -155,6 +160,7 @@ public class GrpcClient {
                             String rfid=String.valueOf(value.getList(count).getId());
                             rfids.add(rfid);
                             System.out.println(rfid);
+                            arrayBlockingQueue.add(rfid);
                             count--;
                         }
 
@@ -173,7 +179,7 @@ public class GrpcClient {
                         logger.info("All Done");
                         countDownLatch.countDown();
                     }
-                    
+
                 };
 
         rfidStub.read(responseObserver);
