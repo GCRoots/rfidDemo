@@ -19,4 +19,9 @@ public class GoodsInfoServerImp implements GoodsInfoServer {
     public GoodsInfo FindByInfoID(String id) {
         return goodsInfoMapper.FindByInfoID(id);
     }
+
+    @Override
+    public GoodsInfo FindByInfoRFID(String rfid) {
+        return goodsInfoMapper.FindByInfoRFID(rfid);
+    }
 }

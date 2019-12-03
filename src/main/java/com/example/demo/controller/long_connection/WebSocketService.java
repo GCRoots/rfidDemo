@@ -1,6 +1,7 @@
 package com.example.demo.controller.long_connection;
 
-import com.example.demo.rfid.ReadReply;
+import com.example.demo.pojo.GoodsInfo;
+import com.example.demo.server.GoodsInfoServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
@@ -23,10 +24,13 @@ public class WebSocketService extends Thread{
     private int num;
     private ArrayBlockingQueue<String> arrayBlockingQueue;
 
+    @Autowired
+    private GoodsInfoServer goodsInfoServer;
+
     public WebSocketService(){
     }
 
-    public WebSocketService(SimpMessagingTemplate template,int num,String uuid,ArrayBlockingQueue<ReadReply> arrayBlockingQueue){
+    public WebSocketService(SimpMessagingTemplate template,int num,String uuid,ArrayBlockingQueue<String> arrayBlockingQueue){
         this.template=template;
         this.num=num;
         this.uuid=uuid;
@@ -45,6 +49,12 @@ public class WebSocketService extends Thread{
             String rfid = arrayBlockingQueue.poll(5, TimeUnit.SECONDS);
             //如果queue为null，那么5秒之后再去队列中取数据
             if (rfid!=null){
+                GoodsInfo goodsInfo=goodsInfoServer.FindByInfoRFID(rfid);
+                goodsInfo.getSizeName();
+                goodsInfo.getColorName();
+                goodsInfo.getTypeName();
+                goodsInfo.getStyleName();
+                String basic=goodsInfo.getFourAttributes();
 
             }
 

@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GoodsInfoMapper {
     GoodsInfo FindByInfoID(@Param("id") String id);
+    GoodsInfo FindByInfoRFID(@Param("rfid")String rfid);
 }

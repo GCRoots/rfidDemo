@@ -10,4 +10,7 @@ public interface GoodsInfoServer {
 
     GoodsInfo FindByInfoID(String id);
 
+    GoodsInfo FindByInfoRFID(String rfid);
+
+
 }
