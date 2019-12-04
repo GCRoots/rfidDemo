@@ -1,4 +1,4 @@
-package com.example.demo.controller.long_connection;
+package com.example.demo.controller.long_connection.hello_demo;
 
 public class Greeting {
 

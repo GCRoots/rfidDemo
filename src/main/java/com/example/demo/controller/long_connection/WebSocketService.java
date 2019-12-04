@@ -1,5 +1,6 @@
 package com.example.demo.controller.long_connection;
 
+import com.example.demo.controller.long_connection.hello_demo.HelloMessage;
 import com.example.demo.pojo.GoodsInfo;
 import com.example.demo.server.GoodsInfoServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +48,15 @@ public class WebSocketService extends Thread{
             if (num<=0)
                 break;
             String rfid = arrayBlockingQueue.poll(5, TimeUnit.SECONDS);
+            //从队列拿到已读的RFID
             //如果queue为null，那么5秒之后再去队列中取数据
             if (rfid!=null){
+                //根据RFID数据库拿到对应数据
                 GoodsInfo goodsInfo=goodsInfoServer.FindByInfoRFID(rfid);
-                goodsInfo.getSizeName();
-                goodsInfo.getColorName();
-                goodsInfo.getTypeName();
-                goodsInfo.getStyleName();
-                String basic=goodsInfo.getFourAttributes();
+
+                String attributes=goodsInfo.getFourAttributes();
+
+
 
             }
 

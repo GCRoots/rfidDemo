@@ -185,7 +185,7 @@ public class GoodsInfo {
     //返回商品属性，格式为：
     //typeName_styleName_colorName_sizeName
     public String getFourAttributes(){
-        return typeName+"_"+styleName+"_"+colorName+"_"+sizeName;
+        return typeName+"/"+styleName+"/"+colorName+"/"+sizeName;
     }
 
     @Override
