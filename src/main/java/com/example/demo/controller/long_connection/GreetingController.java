@@ -47,7 +47,7 @@ public class GreetingController {
         //生产者和消费者共用这一个队列，队列容量为num
 
         //Grpc客户端开始读取数据，并存放与arrayBlockingQueue中
-        new GrpcReading(uuid,num,arrayBlockingQueue).start();
+//        new GrpcReading(uuid,num,arrayBlockingQueue).start();
         //从arrayBlockingQueue中读取数据并传递给页面
         new WebSocketService(template,num,uuid,arrayBlockingQueue).start();
 
@@ -62,23 +62,27 @@ public class GreetingController {
     }
 
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/reading")
+    @SendTo("/topic/readings")
     public Helloing helloing(ReadMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
+
+        //将要读取的RFID群所属uuid
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-
+        //应入数量
         int num=message.getNum();
+        //将要读取的RFID标签的类别
+        String[] attributes=message.getFourAttributes();
 
 
-        ArrayBlockingQueue<String> arrayBlockingQueue= new ArrayBlockingQueue<>(num);
         //生产者和消费者共用这一个队列，队列容量为num
+        ArrayBlockingQueue<String> arrayBlockingQueue= new ArrayBlockingQueue<>(num);
 
         //Grpc客户端开始读取数据，并存放与arrayBlockingQueue中
         new GrpcReading(uuid,num,arrayBlockingQueue).start();
 
         //从arrayBlockingQueue中读取数据并传递给页面
-        new WebSocketService(template,num,uuid,arrayBlockingQueue).start();
+        new WebSocketService(template,num,attributes,uuid,arrayBlockingQueue).start();
 
         //返回给前端当前读取RFID群所属uuid（tag）
         return new Helloing(uuid);

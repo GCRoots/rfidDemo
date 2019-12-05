@@ -15,6 +15,7 @@ public class GrpcReading extends Thread{
 
     public GrpcReading(){
     }
+
     public GrpcReading(String uuid, int num, ArrayBlockingQueue<String> arrayBlockingQueue) {
         this.uuid = uuid;
         this.num = num;
