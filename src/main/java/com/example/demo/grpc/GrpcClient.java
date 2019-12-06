@@ -7,9 +7,7 @@ import io.grpc.stub.ClientCallStreamObserver;
 import io.grpc.stub.ClientResponseObserver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -113,11 +111,9 @@ public class GrpcClient {
 
     /**
      * read操作
-     * @param num 应读到商品数量
-     * @param uuid 商品集合的唯一标识符
      * @param arrayBlockingQueue 用于传递接受到的消息到后台处理
      * */
-    public Map<String,List<String>> read(int num, String uuid, ArrayBlockingQueue<String> arrayBlockingQueue) throws InterruptedException {
+    public List<String> read(ArrayBlockingQueue<String> arrayBlockingQueue) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -154,6 +150,7 @@ public class GrpcClient {
 
                         value.getBaseInfo().getResultCode().getNumber();
 
+                        //count:本次grpc读取到的数据量
                         int count= (int) value.getCount();
                         count--;
                         while (count>0){
@@ -189,10 +186,7 @@ public class GrpcClient {
         managedChannel.awaitTermination(1, TimeUnit.SECONDS);
 
 
-        Map<String,List<String>> map=new HashMap<>();
-        map.put(uuid,rfids);
-
-        return map;
+        return rfids;
 
     }
 

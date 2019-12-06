@@ -1,7 +1,9 @@
 package com.example.demo.grpc.rfid_methods;
 
 import com.example.demo.grpc.GrpcClient;
+import com.example.demo.pojo.Grpc.TempRead;
 
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -26,7 +28,12 @@ public class GrpcReading extends Thread{
         Thread.sleep(1000); // simulated delay
 
         GrpcClient grpcClient=new GrpcClient("localhost",8888);
-        grpcClient.read(num,uuid,arrayBlockingQueue);
+        List<String> rfids=grpcClient.read(arrayBlockingQueue);
+
+
+        TempRead temp=new TempRead();
+        temp.setUuid(uuid);
+        temp.setRfids(rfids);
 
     }
 
