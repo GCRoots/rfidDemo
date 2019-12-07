@@ -12,15 +12,13 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class GrpcReading extends Thread{
     private String uuid;
-    private int num;
     private ArrayBlockingQueue<String> arrayBlockingQueue;
 
     public GrpcReading(){
     }
 
-    public GrpcReading(String uuid, int num, ArrayBlockingQueue<String> arrayBlockingQueue) {
+    public GrpcReading(String uuid,  ArrayBlockingQueue<String> arrayBlockingQueue) {
         this.uuid = uuid;
-        this.num = num;
         this.arrayBlockingQueue = arrayBlockingQueue;
     }
 

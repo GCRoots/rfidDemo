@@ -64,10 +64,11 @@ public class WebSocketService extends Thread{
         for (String attribute:attributes)
             map.put(attribute,0);
 
+        //已读RFID数量
         int real=0;
 
         while (true){
-            if (num<=0)
+            if (num==real)
                 break;
 
             String rfid = arrayBlockingQueue.poll(1, TimeUnit.SECONDS);
@@ -91,7 +92,6 @@ public class WebSocketService extends Thread{
 
             template.convertAndSend("/topic/greetings",new Greeting(uuid+"-"+num));
             template.convertAndSend("/topic/greetings",new Reading(map,real));
-            num--;
         }
 
     }

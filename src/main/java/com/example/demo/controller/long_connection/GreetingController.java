@@ -79,7 +79,7 @@ public class GreetingController {
         ArrayBlockingQueue<String> arrayBlockingQueue= new ArrayBlockingQueue<>(num);
 
         //Grpc客户端开始读取数据，并存放与arrayBlockingQueue中
-        new GrpcReading(uuid,num,arrayBlockingQueue).start();
+        new GrpcReading(uuid,arrayBlockingQueue).start();
 
         //从arrayBlockingQueue中读取数据并传递给页面
         new WebSocketService(template,num,attributes,uuid,arrayBlockingQueue).start();
