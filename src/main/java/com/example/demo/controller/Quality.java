@@ -2,11 +2,11 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.dao.mapper.GoodsColorMapper;
 import com.example.demo.grpc.GrpcClient;
 import com.example.demo.pojo.Data;
-import com.example.demo.pojo.GoodsColor;
+import com.example.demo.pojo.TailorInfo;
 import com.example.demo.server.GoodsColorServer;
+import com.example.demo.server.TailorInfoServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +25,9 @@ public class Quality {
 
     @Autowired
     private GoodsColorServer goodsColorServer;
+
+    @Autowired
+    private TailorInfoServer tailorInfoServer;
 
 
     private static final String DEFAULT_HOST = "localhost";
@@ -45,13 +48,7 @@ public class Quality {
 
 
 
-
-
-
-
         String state="t";
-
-
 
         return "";
     }
@@ -78,6 +75,20 @@ public class Quality {
 
 
         return "";
+    }
+
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    public String trst() throws IOException {
+
+        TailorInfo tailorInfo=tailorInfoServer.FindByTailorID("1");
+
+        System.out.println(tailorInfo.toString());
+        System.out.println(tailorInfo.getCtime());
+
+
+
+
+        return tailorInfo.toString();
     }
 
 }

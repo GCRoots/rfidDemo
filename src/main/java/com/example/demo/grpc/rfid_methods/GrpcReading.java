@@ -17,7 +17,7 @@ public class GrpcReading extends Thread{
     public GrpcReading(){
     }
 
-    public GrpcReading(String uuid,  ArrayBlockingQueue<String> arrayBlockingQueue) {
+    public GrpcReading(String uuid,ArrayBlockingQueue<String> arrayBlockingQueue) {
         this.uuid = uuid;
         this.arrayBlockingQueue = arrayBlockingQueue;
     }
@@ -27,11 +27,16 @@ public class GrpcReading extends Thread{
 
         GrpcClient grpcClient=new GrpcClient("localhost",8888);
         List<String> rfids=grpcClient.read(arrayBlockingQueue);
-
+        int num=rfids.size();
 
         TempRead temp=new TempRead();
         temp.setUuid(uuid);
         temp.setRfids(rfids);
+        temp.setNum(num);
+
+
+
+
 
     }
 

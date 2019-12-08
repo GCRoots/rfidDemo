@@ -6,9 +6,14 @@ import java.util.List;
  * @author shipengfei
  * @data 19-12-6
  */
+
+//用以在GrpcReading类，即在Grpc读取过程中临时存储读取到的数据
 public class TempRead {
+    //此次读取的RFID簇对应的tag（uuid）
     private String uuid;
+    //此次读取的RFID数量
     private int num;
+    //此次读取的RFID簇
     private List<String> rfids;
 
     public String getUuid() {
