@@ -12,5 +12,7 @@ public interface GoodsInfoServer {
 
     GoodsInfo FindByInfoRFID(String rfid);
 
+    void UpdateByInfoRFID(GoodsInfo goodsInfo);
+
 
 }

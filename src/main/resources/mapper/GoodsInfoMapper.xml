@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.dao.mapper.GoodsInfoMapperr">
+<mapper namespace="com.example.demo.dao.mapper.GoodsInfoMapper">
 
     <resultMap id="GoodsInfoResult" type="com.example.demo.pojo.GoodsInfo">
         <id property="id" column="ID"/>
@@ -25,17 +25,24 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
+    <parameterMap id="GoodsInfoParameter" type="com.example.demo.pojo.GoodsInfo">
+        <!--<parameter property="goodsInfo" resultMap="GoodsInfoResult"/>-->
+    </parameterMap>
+
+
     <select id="FindByInfoID"  resultMap="GoodsInfoResult">
     select * from TB_GOODS_INFO where ID = #{id}
     </select>
 
-    <select id="FindGoodsInfo"  resultMap="GoodsInfoResult">
-    select * from TB_GOODS_INFO where (TYPE_NAME,STYLE_NAME,SIZE_ID,COLOR_NAME)
-    values (#{typeName},#{styleName},#{sizeName},#{colorName})
+    <select id="FindByInfoRFID"  resultMap="GoodsInfoResult">
+    select * from TB_GOODS_INFO where RFID = #{RFID}
     </select>
 
-    <select id="FindByInfoRFID"  resultMap="GoodsInfoResult">
-    select TYPE_NAME,STYLE_NAME,SIZE_NAME,COLOR_NAME from TB_GOODS_INFO where RFID = #{RFID}
-    </select>
+    <update id="UpdateByInfoRFID" parameterMap="GoodsInfoParameter">
+    update TB_GOODS_INFO
+    set
+    STATUS = #{status}
+    where RFID = #{RFID}
+    </update>
 
 </mapper>

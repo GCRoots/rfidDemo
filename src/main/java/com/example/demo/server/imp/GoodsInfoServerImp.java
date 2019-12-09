@@ -24,4 +24,9 @@ public class GoodsInfoServerImp implements GoodsInfoServer {
     public GoodsInfo FindByInfoRFID(String rfid) {
         return goodsInfoMapper.FindByInfoRFID(rfid);
     }
+
+    @Override
+    public void UpdateByInfoRFID(GoodsInfo goodsInfo) {
+        goodsInfoMapper.UpdateByInfoRFID(goodsInfo);
+    }
 }

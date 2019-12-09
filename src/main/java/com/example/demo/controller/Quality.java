@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.grpc.GrpcClient;
 import com.example.demo.pojo.Data;
-import com.example.demo.pojo.TailorInfo;
+import com.example.demo.pojo.GoodsInfo;
 import com.example.demo.server.GoodsColorServer;
+import com.example.demo.server.GoodsInfoServer;
 import com.example.demo.server.TailorInfoServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,9 @@ public class Quality {
 
     @Autowired
     private TailorInfoServer tailorInfoServer;
+
+    @Autowired
+    private GoodsInfoServer goodsInfoServer;
 
 
     private static final String DEFAULT_HOST = "localhost";
@@ -80,15 +84,19 @@ public class Quality {
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public String trst() throws IOException {
 
-        TailorInfo tailorInfo=tailorInfoServer.FindByTailorID("1");
+        GoodsInfo goodsInfo=goodsInfoServer.FindByInfoRFID("123456");
+        System.out.println(goodsInfo.toString());
 
-        System.out.println(tailorInfo.toString());
-        System.out.println(tailorInfo.getCtime());
+        GoodsInfo goodsInfo1=new GoodsInfo();
+        goodsInfo1.setRFID("123456");
+        goodsInfo1.setStatus("5");
+        goodsInfoServer.UpdateByInfoRFID(goodsInfo1);
+
+        goodsInfo1=goodsInfoServer.FindByInfoRFID("123456");
+        System.out.println(goodsInfo1.toString());
 
 
-
-
-        return tailorInfo.toString();
+        return goodsInfo.toString()+"\\n"+goodsInfo1.toString();
     }
 
 }
