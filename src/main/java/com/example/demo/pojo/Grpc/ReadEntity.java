@@ -1,5 +1,6 @@
 package com.example.demo.pojo.Grpc;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,11 +9,14 @@ import java.util.List;
  */
 
 //用以在GrpcReading类，即在Grpc读取过程中临时存储读取到的数据
-public class TempRead {
+public class ReadEntity implements Serializable {
+
     //此次读取的RFID簇对应的tag（uuid）
     private String uuid;
+
     //此次读取的RFID数量
     private int num;
+
     //此次读取的RFID簇
     private List<String> rfids;
 
@@ -42,7 +46,7 @@ public class TempRead {
 
     @Override
     public String toString() {
-        return "TempRead{" +
+        return "ReadEntity{" +
                 "uuid='" + uuid + '\'' +
                 ", num=" + num +
                 ", rfids=" + rfids +

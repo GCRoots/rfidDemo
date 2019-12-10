@@ -1,8 +1,11 @@
 package com.example.demo.grpc.rfid_methods;
 
+import com.example.demo.dao.redis.RedisUtil;
 import com.example.demo.grpc.GrpcClient;
-import com.example.demo.pojo.Grpc.TempRead;
+import com.example.demo.pojo.Grpc.ReadEntity;
 
+
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -11,6 +14,12 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @data 19-12-2
  */
 public class GrpcReading extends Thread{
+
+    private static int ExpireTime = 60;   // redis中存储的过期时间60s
+
+    @Resource
+    private RedisUtil redisUtil;
+
     private String uuid;
     private ArrayBlockingQueue<String> arrayBlockingQueue;
 
@@ -29,11 +38,14 @@ public class GrpcReading extends Thread{
         List<String> rfids=grpcClient.read(arrayBlockingQueue);
         int num=rfids.size();
 
-        TempRead temp=new TempRead();
-        temp.setUuid(uuid);
-        temp.setRfids(rfids);
-        temp.setNum(num);
+        ReadEntity entity=new ReadEntity();
+        entity.setUuid(uuid);
+        entity.setRfids(rfids);
+        entity.setNum(num);
 
+        redisUtil.set(uuid,entity);
+        if (redisUtil.hasKey(uuid))
+            redisUtil.expire(uuid,ExpireTime);
 
 
 
