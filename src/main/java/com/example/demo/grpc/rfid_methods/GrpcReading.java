@@ -15,7 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class GrpcReading extends Thread{
 
-    private static int ExpireTime = 60;   // redis中存储的过期时间60s
+    private static int ExpireTime = 300;   // redis中存储的过期时间60s
 
     @Resource
     private RedisUtil redisUtil;
@@ -43,12 +43,7 @@ public class GrpcReading extends Thread{
         entity.setRfids(rfids);
         entity.setNum(num);
 
-        redisUtil.set(uuid,entity);
-        if (redisUtil.hasKey(uuid))
-            redisUtil.expire(uuid,ExpireTime);
-
-
-
+        redisUtil.set(uuid,entity,ExpireTime);
 
     }
 
