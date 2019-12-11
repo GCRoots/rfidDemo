@@ -12,6 +12,8 @@ public class Reading {
     //当前已扫描riid标签数，即实入库数
     private int num;
 
+    private String state;
+
     public Reading() {
     }
 
