@@ -154,6 +154,7 @@ public class GrpcClient {
                         int count= (int) value.getCount();
                         count--;
                         while (count>0){
+                            //获取到消息体里的RFID码
                             String rfid=String.valueOf(value.getList(count).getId());
                             rfids.add(rfid);
                             System.out.println(rfid);

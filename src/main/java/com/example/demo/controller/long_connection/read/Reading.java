@@ -11,16 +11,18 @@ public class Reading {
     private Map<String,Integer> clothesNum;
     //当前已扫描riid标签数，即实入库数
     private int num;
-
+    //当前已扫描riid读取情况：是否为所要的类型的RFID（t/f）
     private String state;
 
     public Reading() {
     }
 
-    public Reading(Map<String, Integer> clothesNum, int num) {
+    public Reading(Map<String, Integer> clothesNum, int num, String state) {
         this.clothesNum = clothesNum;
         this.num = num;
+        this.state = state;
     }
+
 
     public Map<String, Integer> getClothesNum() {
         return clothesNum;
@@ -28,5 +30,9 @@ public class Reading {
 
     public int getNum() {
         return num;
+    }
+
+    public String getState() {
+        return state;
     }
 }

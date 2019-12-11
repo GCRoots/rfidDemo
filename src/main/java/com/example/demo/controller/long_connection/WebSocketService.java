@@ -67,6 +67,9 @@ public class WebSocketService extends Thread{
         //已读RFID数量
         int real=0;
 
+        //当前读取情况
+        String status="t";
+
         while (true){
             if (num==real)
                 break;
@@ -86,12 +89,15 @@ public class WebSocketService extends Thread{
                     real++;
                 }else{
 
+                    //处理意料外情况，待定
+
+                    status="f";
                 }
 
             }
 
             template.convertAndSend("/topic/greetings",new Greeting(uuid+"-"+num));
-            template.convertAndSend("/topic/greetings",new Reading(map,real));
+            template.convertAndSend("/topic/greetings",new Reading(map,real,status));
         }
 
     }
