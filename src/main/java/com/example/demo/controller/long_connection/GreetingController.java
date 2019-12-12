@@ -35,7 +35,7 @@ public class GreetingController {
     private SimpMessagingTemplate template;
 
 
-    @MessageMapping("/hello")
+//    @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay

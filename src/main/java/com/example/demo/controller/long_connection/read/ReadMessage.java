@@ -1,6 +1,8 @@
 package com.example.demo.controller.long_connection.read;
 
 /**
+ * 接收前台消息的消息体
+ *
  * @author shipengfei
  * @data 19-12-3
  */

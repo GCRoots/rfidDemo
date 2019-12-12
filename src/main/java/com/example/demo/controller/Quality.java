@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.controller.long_connection.hello_demo.Greeting;
+import com.example.demo.controller.long_connection.hello_demo.HelloMessage;
 import com.example.demo.grpc.GrpcClient;
 import com.example.demo.pojo.Data;
 import com.example.demo.pojo.GoodsInfo;
@@ -9,12 +11,13 @@ import com.example.demo.server.GoodsColorServer;
 import com.example.demo.server.GoodsInfoServer;
 import com.example.demo.server.TailorInfoServer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author shipengfei
@@ -68,17 +71,16 @@ public class Quality {
     }
 
 
-    //质检-销毁
-    @RequestMapping(value = "/quality/destroy",method = RequestMethod.POST)
-    public String destroy(@RequestBody JSONObject json) throws IOException {
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    @RequestMapping(value = "/hello",method = RequestMethod.POST)
+    public Greeting destroy(@RequestBody HelloMessage message) throws IOException, InterruptedException {
 
-        Data d= JSON.parseObject(json.toString(), Data.class);
-        String id=d.getId();
+        Thread.sleep(1000); // simulated delay
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
+        return new Greeting(uuid+"\t\t" + HtmlUtils.htmlEscape(message.getName()));
 
-
-
-        return "";
     }
 
     @RequestMapping(value = "/test",method = RequestMethod.GET)

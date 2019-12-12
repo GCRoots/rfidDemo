@@ -3,6 +3,8 @@ package com.example.demo.controller.long_connection.read;
 import java.util.Map;
 
 /**
+ * 发送给前台的消息体
+ *
  * @author shipengfei
  * @data 19-12-5
  */
