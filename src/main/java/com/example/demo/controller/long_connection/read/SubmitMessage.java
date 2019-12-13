@@ -6,16 +6,16 @@ package com.example.demo.controller.long_connection.read;
  * @author shipengfei
  * @data 19-12-12
  */
-public class SbumitMessage {
+public class SubmitMessage {
     //此次写入的RFID簇对应的tag（uuid）
     private int uuid;
     //将要提交的RFID标签类型   eg:类型/款号/色号/尺码
     private String[] fourAttributes;
 
-    public SbumitMessage() {
+    public SubmitMessage() {
     }
 
-    public SbumitMessage(int uuid, String[] fourAttributes) {
+    public SubmitMessage(int uuid, String[] fourAttributes) {
         this.uuid = uuid;
         this.fourAttributes = fourAttributes;
     }

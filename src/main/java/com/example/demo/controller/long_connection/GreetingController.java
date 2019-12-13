@@ -4,6 +4,8 @@ import com.example.demo.controller.long_connection.hello_demo.Greeting;
 import com.example.demo.controller.long_connection.hello_demo.HelloMessage;
 import com.example.demo.controller.long_connection.read.Helloing;
 import com.example.demo.controller.long_connection.read.ReadMessage;
+import com.example.demo.controller.long_connection.read.SubmitMessage;
+import com.example.demo.controller.long_connection.read.Submitting;
 import com.example.demo.grpc.GrpcClient;
 import com.example.demo.grpc.rfid_methods.GrpcReading;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,7 @@ public class GreetingController {
 
     @MessageMapping("/reading")
     @SendTo("/topic/readings")
-    public Helloing helloing(ReadMessage message) throws Exception {
+    public Helloing reading(ReadMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
 
         //将要读取的RFID群所属uuid
@@ -86,6 +88,22 @@ public class GreetingController {
 
         //返回给前端当前读取RFID群所属uuid（tag）
         return new Helloing(uuid);
+    }
+
+    @MessageMapping("/submitting")
+    @SendTo("/topic/submittings")
+    public Submitting submitting(SubmitMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+
+        //将要读取的RFID标签的uuid
+        int uuid=message.getUuid();
+        //将要读取的RFID标签的类别
+        String[] attributes=message.getFourAttributes();
+
+
+
+        //返回给前端当前读取RFID群所属uuid（tag）
+        return new Submitting("t",0);
     }
 
 
