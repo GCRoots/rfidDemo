@@ -7,6 +7,7 @@ import io.grpc.stub.ClientCallStreamObserver;
 import io.grpc.stub.ClientResponseObserver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -111,9 +112,12 @@ public class GrpcClient {
 
     /**
      * read操作
+     *
      * @param arrayBlockingQueue 用于传递接受到的消息到后台处理
-     * */
-    public List<String> read(ArrayBlockingQueue<String> arrayBlockingQueue) throws InterruptedException {
+     * @return 返回读取的RFID集合
+     * @throws InterruptedException
+     */
+    public List<String> read(int num,ArrayBlockingQueue<String> arrayBlockingQueue) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -137,6 +141,13 @@ public class GrpcClient {
                             public void run() {
                                 // Start generating values from where we left off on a non-gRPC thread.
                                 while (readCallStreamObserver.isReady()) {
+                                    if (rfids.size()!=num){
+                                        ReadParam readParam=ReadParam.getDefaultInstance();
+
+                                        readCallStreamObserver.onNext(readParam);
+                                    }else {
+                                        readCallStreamObserver.onCompleted();
+                                    }
 
                                 }
                             }
@@ -191,8 +202,14 @@ public class GrpcClient {
 
     }
 
-    //writeQualified操作 -> 质检合格时调用
-    public void writeQualified( List<Integer> nums) throws InterruptedException {
+
+
+    /**
+     * qualifiedSubimt操作 -> 质检合格时调用
+     *
+     * @throws InterruptedException
+     */
+    public void qualifiedSubimt(List<String> rfids,ArrayBlockingQueue<String> arrayBlockingQueue) throws InterruptedException {
 
         //判断调用状态。在内部类中被访问，需要加final修饰
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -209,10 +226,27 @@ public class GrpcClient {
 
                         writeCallStreamObserver.setOnReadyHandler(new Runnable() {
 
+                            Iterator<String> iterator=rfids.iterator();
+
                             @Override
                             public void run() {
                                 // Start generating values from where we left off on a non-gRPC thread.
                                 while (writeCallStreamObserver.isReady()) {
+                                    if (iterator.hasNext()){
+                                        String rfid=iterator.next();
+
+
+
+                                        WriteParam writeParam=WriteParam.newBuilder().build();
+                                        System.out.println(writeParam.toString());
+
+                                        arrayBlockingQueue.add(rfid);
+
+                                        writeCallStreamObserver.onNext(writeParam);
+                                    }else {
+                                        writeCallStreamObserver.onCompleted();
+                                    }
+
 
                                 }
                             }
@@ -222,8 +256,6 @@ public class GrpcClient {
                     @Override
                     public void onNext(WriteReply value) {
                         logger.info("<-- " + value.toString());
-
-                        value.getBaseInfo().getResultCode().getNumber();
 
                         // Signal the sender to send one message.
                         writeCallStreamObserver.request(1);
@@ -249,126 +281,6 @@ public class GrpcClient {
         managedChannel.awaitTermination(1, TimeUnit.SECONDS);
 
     }
-
-    //writeFailed操作 -> 质检为残次品时调用
-    public void writeFailed( List<Integer> nums) throws InterruptedException {
-
-        //判断调用状态。在内部类中被访问，需要加final修饰
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        ClientResponseObserver<WriteParam, WriteReply> responseObserver =
-                new ClientResponseObserver<WriteParam, WriteReply>() {
-
-                    ClientCallStreamObserver<WriteParam> writeCallStreamObserver;
-
-                    @Override
-                    public void beforeStart(ClientCallStreamObserver<WriteParam> writeCallStreamObserver) {
-                        this.writeCallStreamObserver = writeCallStreamObserver;
-                        writeCallStreamObserver.disableAutoInboundFlowControl();
-
-                        writeCallStreamObserver.setOnReadyHandler(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                // Start generating values from where we left off on a non-gRPC thread.
-                                while (writeCallStreamObserver.isReady()) {
-
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onNext(WriteReply value) {
-                        logger.info("<-- " + value.toString());
-
-                        value.getBaseInfo().getResultCode().getNumber();
-
-                        // Signal the sender to send one message.
-                        writeCallStreamObserver.request(1);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        t.printStackTrace();
-                        countDownLatch.countDown();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        logger.info("All Done");
-                        countDownLatch.countDown();
-                    }
-                };
-
-        rfidStub.write(responseObserver);
-        countDownLatch.await();
-
-        managedChannel.shutdown();
-        managedChannel.awaitTermination(1, TimeUnit.SECONDS);
-
-    }
-
-    //writeDestroy操作 -> 质检为残次品时调用
-    public void writeDestroy( List<Integer> nums) throws InterruptedException {
-
-        //判断调用状态。在内部类中被访问，需要加final修饰
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        ClientResponseObserver<WriteParam, WriteReply> responseObserver =
-                new ClientResponseObserver<WriteParam, WriteReply>() {
-
-                    ClientCallStreamObserver<WriteParam> writeCallStreamObserver;
-
-                    @Override
-                    public void beforeStart(ClientCallStreamObserver<WriteParam> writeCallStreamObserver) {
-                        this.writeCallStreamObserver = writeCallStreamObserver;
-                        writeCallStreamObserver.disableAutoInboundFlowControl();
-
-                        writeCallStreamObserver.setOnReadyHandler(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                // Start generating values from where we left off on a non-gRPC thread.
-                                while (writeCallStreamObserver.isReady()) {
-
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onNext(WriteReply value) {
-                        logger.info("<-- " + value.toString());
-
-                        value.getBaseInfo().getResultCode().getNumber();
-
-                        // Signal the sender to send one message.
-                        writeCallStreamObserver.request(1);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        t.printStackTrace();
-                        countDownLatch.countDown();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        logger.info("All Done");
-                        countDownLatch.countDown();
-                    }
-                };
-
-        rfidStub.write(responseObserver);
-        countDownLatch.await();
-
-        managedChannel.shutdown();
-        managedChannel.awaitTermination(1, TimeUnit.SECONDS);
-
-    }
-
-
 
 
 }

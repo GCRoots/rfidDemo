@@ -1,17 +1,14 @@
-package com.example.demo.controller.long_connection;
+package com.example.demo.controller.long_connection.method;
 
-import com.example.demo.controller.long_connection.hello_demo.Greeting;
-import com.example.demo.controller.long_connection.hello_demo.HelloMessage;
-import com.example.demo.controller.long_connection.read.Reading;
+import com.example.demo.controller.long_connection.read.Submitting;
 import com.example.demo.pojo.GoodsInfo;
 import com.example.demo.server.GoodsInfoServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -21,42 +18,31 @@ import java.util.concurrent.TimeUnit;
  * @data 19-11-27
  */
 @Component
-public class WebSocketService extends Thread{
+public class WebSubmitting extends Thread{
 
     @Autowired
     private SimpMessagingTemplate template;
 
     private int num;
     private String[] attributes;
-    private String uuid;
+    private List<String> rfids;
     private ArrayBlockingQueue<String> arrayBlockingQueue;
 
     @Autowired
     private GoodsInfoServer goodsInfoServer;
 
-    public WebSocketService(){
+    public WebSubmitting(){
     }
 
-    public WebSocketService(SimpMessagingTemplate template,int num,String[] attributes,String uuid,ArrayBlockingQueue<String> arrayBlockingQueue){
-        this.template=template;
-        this.num=num;
-        this.attributes=attributes;
-        this.uuid=uuid;
-        this.arrayBlockingQueue=arrayBlockingQueue;
-    }
-
-    public WebSocketService(SimpMessagingTemplate template,int num,String uuid,ArrayBlockingQueue<String> arrayBlockingQueue){
-        this.template=template;
-        this.num=num;
-        this.uuid=uuid;
-        this.arrayBlockingQueue=arrayBlockingQueue;
+    public WebSubmitting(int num, String[] attributes, List<String> rfids, ArrayBlockingQueue<String> arrayBlockingQueue) {
+        this.num = num;
+        this.attributes = attributes;
+        this.rfids = rfids;
+        this.arrayBlockingQueue = arrayBlockingQueue;
     }
 
 
-
-
-
-    public void reading() throws Exception {
+    public void submitting() throws Exception {
         Thread.sleep(1000); // simulated delay
 
         Map<String,Integer> map=new HashMap<>();
@@ -82,43 +68,30 @@ public class WebSocketService extends Thread{
                 GoodsInfo goodsInfo=goodsInfoServer.FindByInfoRFID(rfid);
 
                 String attrs=goodsInfo.getFourAttributes();
-
                 if(map.containsKey(attrs)){
                     int n=map.get(attrs);
                     map.put(attrs,n+1);
                     real++;
+                    goodsInfo.setStatus("4");
+                    goodsInfoServer.UpdateByInfoRFID(goodsInfo);
                 }else{
-
                     //处理意料外情况，待定
-
                     status="f";
                 }
-
             }
 
-            template.convertAndSend("/topic/greetings",new Greeting(uuid+"-"+num));
-            template.convertAndSend("/topic/greetings",new Reading(map,real,status));
+            template.convertAndSend("/topic/greetings",new Submitting(status,real));
         }
 
     }
 
     public void run(){
         try {
-            reading();
+            submitting();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-
-
-    public void sendInfo(){
-
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-
-        template.convertAndSend("/topic/greetings",new HelloMessage(now.format(df)));
-
-    }
 }

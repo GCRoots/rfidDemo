@@ -20,13 +20,15 @@ public class GrpcReading extends Thread{
     @Resource
     private RedisUtil redisUtil;
 
+    private int num;
     private String uuid;
     private ArrayBlockingQueue<String> arrayBlockingQueue;
 
     public GrpcReading(){
     }
 
-    public GrpcReading(String uuid,ArrayBlockingQueue<String> arrayBlockingQueue) {
+    public GrpcReading(int num,String uuid,ArrayBlockingQueue<String> arrayBlockingQueue) {
+        this.num=num;
         this.uuid = uuid;
         this.arrayBlockingQueue = arrayBlockingQueue;
     }
@@ -35,7 +37,7 @@ public class GrpcReading extends Thread{
         Thread.sleep(1000); // simulated delay
 
         GrpcClient grpcClient=new GrpcClient("localhost",8888);
-        List<String> rfids=grpcClient.read(arrayBlockingQueue);
+        List<String> rfids=grpcClient.read(num,arrayBlockingQueue);
         int num=rfids.size();
 
         ReadEntity entity=new ReadEntity();

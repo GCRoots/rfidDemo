@@ -7,7 +7,7 @@ package com.example.demo.pojo;
 public class GoodsInventoryLog extends Basic{
     private String id;           // ID
     private String factoryID;    // FACTORY_ID 工厂ID
-    private String goodsID;  //GOODS_ID 商品ID
+    private String goodsID;   //GOODS_ID 商品ID
     private String managerID; // MANAGER_ID 仓库管理人ID
     private String outID;     // OUTBOUND_TYPE_ID 出库类型ID
     private String outName;   // OUTBOUND_TYPE_NAME 出库名称
