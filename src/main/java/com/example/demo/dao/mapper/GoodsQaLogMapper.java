@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface GoodsQaLogMapper {
 
     GoodsQaLog FindByQaLogID(@Param("id") String id);
+    void AddQaLog(GoodsQaLog goodsQaLog);
 
 }

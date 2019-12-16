@@ -19,4 +19,9 @@ public class GoodsQaLogServerImp implements GoodsQaLogServer {
     public GoodsQaLog FindByQaLogID(String id) {
         return goodsQaLogMapper.FindByQaLogID(id);
     }
+
+    @Override
+    public void AddQaLog(GoodsQaLog goodsQaLog) {
+        goodsQaLogMapper.AddQaLog(goodsQaLog);
+    }
 }

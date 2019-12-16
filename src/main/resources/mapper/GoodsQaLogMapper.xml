@@ -19,8 +19,18 @@
         <result property="utime" column="_UPDATE_TIME"/>
     </resultMap>
 
+    <parameterMap id="GoodsQaLogParameter" type="com.example.demo.pojo.GoodsQaLog">
+    </parameterMap>
+
+
     <select id="FindByQaLogID"  resultMap="GoodsQaLogResult">
     select * from TB_GOODS_QA_LOG where ID = #{id}
     </select>
+
+    <insert id="AddQaLog" parameterMap="GoodsQaLogParameter">
+        insert into
+        TB_GOODS_QA_LOG (ID, FACTORY_ID, GOODS_ID, QA_ID, TAILOR_ID, STATUS, "_VERSION", "_CREATE_USER_ID", "_CREATE_USER_NAME", "_CREATE_TIME", "_UPDATE_USER_ID", "_UPDATE_USER_NAME", "_UPDATE_TIME")
+        value (#{id},#{factoryID},#{goodsID},#{goodsID},#{qaID},#{tailorID},#{status},#{version},#{cuid},#{cname},#{ctime},#{uuid},#{uname},#{utime})
+    </insert>
 
 </mapper>

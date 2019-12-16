@@ -10,4 +10,6 @@ public interface GoodsQaLogServer {
 
     GoodsQaLog FindByQaLogID(String id);
 
+    void AddQaLog(GoodsQaLog goodsQaLog);
+
 }
